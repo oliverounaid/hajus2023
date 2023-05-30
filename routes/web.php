@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WeatherController;
+use App\Http\Controllers\MapController;
+use App\Http\Controllers\MarkerController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,5 +37,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/weather', [WeatherController::class, 'index']);
+Route::get('/map', [MapController::class, 'index']);
+Route::get('/markers', [MarkerController::class, 'index'])->name('markers.index');
+Route::post('/markers', [MarkerController::class, 'store'])->name('markers.store');
+Route::put('/markers/{marker}', [MarkerController::class, 'update'])->name('markers.update');
+Route::delete('/markers/{marker}', [MarkerController::class, 'destroy'])->name('markers.destroy');
+
 
 require __DIR__.'/auth.php';
