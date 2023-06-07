@@ -5,7 +5,7 @@ namespace Deployer;
 require 'recipe/laravel.php';
 
 // Project name
-set('application', 'hajusrakendused');
+set('application', 'hajus2023');
 set('remote_user', 'virt106862'); //virt...
 set('http_user', 'virt106862');
 set('keep_releases', 2);
@@ -14,7 +14,7 @@ set('keep_releases', 2);
 host('ta21ounaid.itmajakas.ee')
     ->setHostname('ta21ounaid.itmajakas.ee')
     ->set('http_user', 'virt106862')
-    ->set('deploy_path', '~/domeenid/www.ta21ounaid.itmajakas.ee/kataloog')
+    ->set('deploy_path', '~/domeenid/www.ta21ounaid.itmajakas.ee/hajus')
     ->set('branch', 'main');
 
 // Tasks
