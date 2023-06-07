@@ -25,7 +25,7 @@
         "@fortawesome/vue-fontawesome": "^3.0.3",
         "@googlemaps/js-api-loader": "^1.15.1",
         "@headlessui/vue": "^1.7.12",
-        "dayjs": "^1.11.7",
+        "dayjs": "^1.11.8",
         "heroicons-vue3": "^1.0.2",
         "vue-router": "^4.1.6"
     }

@@ -1,5 +1,5 @@
 <template>
-
+<Head title="Weather" />
   <Navbar />
     <div class="flex p-6 items-center font-semibold gap-2 flex-col center" v-if="data">
       <img :src="weatherIcon" alt="" class="h-44" />
@@ -14,6 +14,7 @@
 <script setup>
 import { computed } from "@vue/runtime-core";
 import Navbar from '../Components/Navbar.vue';
+import { Head } from '@inertiajs/vue3';
 
 const props = defineProps({
   data: Object,

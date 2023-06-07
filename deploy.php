@@ -5,20 +5,20 @@ namespace Deployer;
 require 'recipe/laravel.php';
 
 // Project name
-set('application', 'projekti nimi');
-set('remote_user', ''); //virt...
-set('http_user', '');
+set('application', 'hajusrakendused');
+set('remote_user', 'virt106862'); //virt...
+set('http_user', 'virt106862');
 set('keep_releases', 2);
 
 // Hosts
-host('nimi.itmajakas.ee')
-    ->setHostname('nimi.itmajakas.ee')
-    ->set('http_user', '')
-    ->set('deploy_path', '~/domeenid/www.nimi.itmajakas.ee/kataloog')
-    ->set('branch', 'dev');
+host('ta21ounaid.itmajakas.ee')
+    ->setHostname('ta21ounaid.itmajakas.ee')
+    ->set('http_user', 'virt106862')
+    ->set('deploy_path', '~/domeenid/www.ta21ounaid.itmajakas.ee/kataloog')
+    ->set('branch', 'main');
 
 // Tasks
-set('repository', 'repo nimi');
+set('repository', 'https://github.com/oliverounaid/hajus2023.git');
 //Restart opcache
 task('opcache:clear', function () {
     run('killall php81-cgi || true');

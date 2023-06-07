@@ -1,42 +1,48 @@
 <template>
+  <Head title="Map" />
   <Navbar />
-  <div class="lg:w-7/12 w-full h-96">
-    <div class="h-full w-full mx-2 my-2" id="map" ref="map"></div>
-    <form class="grid w-72 gap-4 mt-4 mx-6" @submit.prevent="submit">
-      <label for="">Name</label>
-      <input type="text" v-model="form.name" required>
-      <label for="">Desc</label>
-      <input type="text" v-model="form.desc">
-      <label for="">Lat</label>
-      <input type="text" v-model="form.lat" required>
-      <label for="">Lng</label>
-      <input type="text" v-model="form.lng" required>
-      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ form.marker_id ? 'Update Marker' : 'Add Marker' }}</button>
-    </form>
-    <table class="table-fixed mt-8 mx-2 text-left">
-      <thead>
-        <tr>
-          <th class="w-1/4">Name</th>
-          <th class="w-1/4">Desc</th>
-          <th class="w-1/4">Lat</th>
-          <th class="w-1/4">Lng</th>
-          <th class="w-1/4">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(marker, index) in markers" :key="index" class="border">
-          <td class="border">{{ marker.name }}</td>
-          <td class="border">{{ marker.description }}</td>
-          <td class="border">{{ marker.latitude }}</td>
-          <td class="border">{{ marker.longitude }}</td>
-          <td>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 w-[100%]" @click="editMarker(index)">Edit</button>
-            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" @click="deleteMarker(index)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class=" w-full h-96 flex">
+    <div class="h-full w-full mx-6 my-6 rounded-lg lg:w-6/12" id="map" ref="map"></div>
+    <div class="flex">
+      <form class="flex flex-col w-72 mt-6 mx-6 gap-2" @submit.prevent="submit">
+        <label for="">Name</label>
+        <input class="rounded-lg" type="text" v-model="form.name" required>
+        <label for="">Desc</label>
+        <input class="rounded-lg" type="text" v-model="form.desc">
+        <label for="">Lat</label>
+        <input class="rounded-lg" type="text" v-model="form.lat" required>
+        <label for="">Lng</label>
+        <input class="rounded-lg" type="text" v-model="form.lng" required>
+        <button type="submit" class="bg-gray-800 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg">{{
+          form.marker_id ? 'UPDATE MARKER' : 'ADD MARKER' }}</button>
+      </form>
+    </div>
   </div>
+  <table class="table-fixed mt-8 mx-2 text-left w-1/2">
+    <thead>
+      <tr>
+        <th class="w-1/4">Name</th>
+        <th class="w-1/4">Desc</th>
+        <th class="w-1/4">Lat</th>
+        <th class="w-1/4">Lng</th>
+        <th class="w-1/4">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(marker, index) in markers" :key="index" class="border">
+        <td class="border">{{ marker.name }}</td>
+        <td class="border">{{ marker.description }}</td>
+        <td class="border">{{ marker.latitude }}</td>
+        <td class="border">{{ marker.longitude }}</td>
+        <td class="flex">
+          <button class="bg-gray-800 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg mr-2 w-[100%]"
+            @click="editMarker(index)">EDIT</button>
+          <button class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 rounded-lg"
+            @click="deleteMarker(index)">DELETE</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script setup>
@@ -45,6 +51,7 @@ import { useForm } from "@inertiajs/vue3";
 import Navbar from '../Components/Navbar.vue';
 import { inject, onMounted, ref } from "vue";
 import axios from 'axios';
+import { Head } from '@inertiajs/vue3';
 
 const route = inject('route');
 
@@ -69,25 +76,25 @@ const form = useForm({
 
 let markers = ref(props.markers || []);
 
-//Google maps conf
+
 const loader = new Loader({
   apiKey: '',
   version: "weekly",
 });
 
-//map käivitatakse
+
 onMounted(() => {
   loader.load().then(() => {
-    let myLatLng = { lat: 58.24806, lng: 22.50389 };
+    let myLatLng = { lat: 58.77028, lng: 	24.89177 };
     gmap = new google.maps.Map(map.value, {
-      zoom: 8,
+      zoom: 7,
       center: myLatLng,
     });
 
-    // Fetch markers from the database
+    
     axios.get(route('markers.index'))
       .then(response => {
-        // Add fetched markers to the map
+        
         markers.value = response.data;
         markers.value.forEach((marker) => {
           const newMarker = new google.maps.Marker({
@@ -95,7 +102,6 @@ onMounted(() => {
             map: gmap,
           });
 
-          // Add event listener to open the infowindow on click
           newMarker.addListener('click', () => {
             const infowindow = new google.maps.InfoWindow({
               content: `
@@ -138,29 +144,23 @@ const submit = () => {
   formData.append('longitude', form.lng);
 
   if (form.marker_id) {
-  // Update an existing marker
-  form.put(route('markers.update', { id: form.marker_id }), formData, {
-    onSuccess: (response) => {
-      console.log(response);
-      // Update the marker on the map
-      const updatedMarkerIndex = markers.value.find((marker) => marker.id === form.marker_id);
-      const updatedMarker = response.data;
+    form.put(route('markers.update', { id: form.marker_id }), formData, {
+      onSuccess: (response) => {
+        console.log(response);
+        const updatedMarkerIndex = markers.value.find((marker) => marker.id === form.marker_id);
+        const updatedMarker = response.data;
         markers.value[updatedMarkerIndex] = updatedMarker;
-      // Clear the form
-      form.name = '';
-      form.desc = '';
-      form.lat = null;
-      form.lng = null;
-      form.marker_id = null;
-    },
-  });
+        form.name = '';
+        form.desc = '';
+        form.lat = null;
+        form.lng = null;
+        form.marker_id = null;
+      },
+    });
   } else {
-    // Create a new marker
     form.post(route('markers.store'), formData, {
       onSuccess: (response) => {
         console.log(response);
-  
-        // Create a new marker on the map
         const newMarker = {
           id: response.id,
           name: form.name,
@@ -174,7 +174,6 @@ const submit = () => {
           map: gmap,
         });
         console.log(marker);
-        // Add event listener to open the infowindow on click
         marker.addListener('click', () => {
           const infowindow = new google.maps.InfoWindow({
             content: `
@@ -186,7 +185,6 @@ const submit = () => {
           });
           infowindow.open(gmap, marker);
         });
-        // Clear the form
         form.name = '';
         form.desc = '';
         form.lat = null;
@@ -196,8 +194,6 @@ const submit = () => {
   }
 };
 
-
-// Function to edit a marker
 const editMarker = (index) => {
   const marker = markers.value[index];
   form.name = marker.name;
@@ -207,23 +203,18 @@ const editMarker = (index) => {
   form.marker_id = marker.id;
 };
 
-
 const deleteMarker = (index) => {
   const marker = markers.value[index];
   axios.delete(route('markers.destroy', { marker: marker.id }))
     .then(() => {
-      // Remove the marker from the markers array
       markers.value.splice(index, 1);
-      // Remove the marker from the map
       if (marker && marker.setmap) {
         marker.gmapMarker.setMap(null);
       }
-      // Clear the form
       form.reset();
     })
     .catch((error) => {
       console.log(error);
     });
 };
-
 </script>  

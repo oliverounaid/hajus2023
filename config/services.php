@@ -38,5 +38,9 @@ return [
     'map' => [
         'key' => env('MAPS_KEY')
     ],
+    
+    'omdb' => [
+        'api_key' => env('OMDB_API_KEY'),
+    ],
 
 ];

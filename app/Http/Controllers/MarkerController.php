@@ -56,7 +56,7 @@ class MarkerController extends Controller
         $marker->edited = now();
         $marker->save();
 
-        return Redirect::back()->with(['message' => 'Marker updated successfully']);
+        return Inertia::location('/map');
     }
 
 
@@ -65,6 +65,6 @@ class MarkerController extends Controller
         $marker = Marker::findOrFail($id);
         $marker->delete();
 
-        return Redirect::back()->with(['message' => 'Marker deleted']);
+        return Inertia::location('/map');
     }
 }
