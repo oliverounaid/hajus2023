@@ -18,7 +18,7 @@ host('ta21ounaid.itmajakas.ee')
     ->set('branch', 'main');
 
 // Tasks
-set('repository', 'https://github.com/oliverounaid/hajus2023.git');
+set('repository', 'git@github.com:oliverounaid/hajus2023.git');
 //Restart opcache
 task('opcache:clear', function () {
     run('killall php81-cgi || true');
