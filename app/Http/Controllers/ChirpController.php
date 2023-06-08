@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chirp;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -13,12 +14,11 @@ class ChirpController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : Response
+    public function index(): Response
     {
         return Inertia::render('Chirps/Index', [
-
-        'chirps' => Chirp::with('user:id,name')->latest()->get(),
-
+            'chirps' => Chirp::with('user:id,name')->latest()->get(),
+            'comments' => Comment::with(['user:id,name', 'chirp:id'])->latest()->get(),
         ]);
     }
 
@@ -33,12 +33,15 @@ class ChirpController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) : RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'message' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
         ]);
+
         $request->user()->chirps()->create($validated);
+
         return redirect(route('chirps.index'));
     }
 
@@ -63,12 +66,16 @@ class ChirpController extends Controller
      */
     public function update(Request $request, Chirp $chirp): RedirectResponse
     {
+        //
         $this->authorize('update', $chirp);
 
         $validated = $request->validate([
-            'message' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
         ]);
+
         $chirp->update($validated);
+
         return redirect(route('chirps.index'));
     }
 
@@ -77,8 +84,10 @@ class ChirpController extends Controller
      */
     public function destroy(Chirp $chirp): RedirectResponse
     {
-        $this->authorize('delete', $chirp);
+        //$this->authorize('delete', $chirp);
+
         $chirp->delete();
+
         return redirect(route('chirps.index'));
     }
 }

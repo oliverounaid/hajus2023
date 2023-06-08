@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+
 use App\Http\Controllers\WeatherController;
+
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\MarkerController;
 
 use App\Http\Controllers\ChirpController;
-use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CommentController;
 
 use App\Http\Controllers\DogsController;
 
@@ -14,6 +16,7 @@ use App\Http\Controllers\CartAddController;
 use App\Http\Controllers\CartRemoveController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ShoppingCartController;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -64,7 +67,10 @@ Route::resource('chirps', ChirpController::class)
     ->only(['index', 'store', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
-Route::get('/blog', [BlogController::class, 'index']);
+Route::resource('comments', CommentController::class)
+    ->middleware(['auth', 'verified']);
+
+
 //shop
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 Route::post('/cart-add', CartAddController::class)->name('cart.add');
